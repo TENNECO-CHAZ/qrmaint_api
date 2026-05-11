@@ -1,4 +1,5 @@
 """Pydantic models for the Users domain."""
+from __future__ import annotations
 
 from .common import _CamelModel
 

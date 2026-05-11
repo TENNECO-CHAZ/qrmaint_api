@@ -1,4 +1,5 @@
 """Resource class for the Work Requests endpoint (/work-requests)."""
+from __future__ import annotations
 
 from ..models.common import CreatedObject, PaginatedResponse
 from ..models.work_requests import WorkRequest, WorkRequestParams

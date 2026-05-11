@@ -1,4 +1,5 @@
 """Pydantic models for the Work Orders domain."""
+from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum

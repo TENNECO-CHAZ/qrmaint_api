@@ -1,4 +1,5 @@
 """Resource class for the Users endpoint (/users)."""
+from __future__ import annotations
 
 from ..models.common import PaginatedResponse
 from ..models.users import User

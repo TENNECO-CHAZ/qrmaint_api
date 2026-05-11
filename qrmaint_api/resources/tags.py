@@ -1,4 +1,5 @@
 """Resource class for the Tags endpoint (/tags)."""
+from __future__ import annotations
 
 from ..models.common import PaginatedResponse
 from ..models.tags import Tag, TagType

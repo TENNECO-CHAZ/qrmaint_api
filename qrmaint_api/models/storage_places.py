@@ -1,4 +1,5 @@
 """Pydantic models for the Storage Places domain."""
+from __future__ import annotations
 
 from .common import _CamelModel
 

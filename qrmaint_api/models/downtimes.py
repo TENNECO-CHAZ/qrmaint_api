@@ -1,4 +1,5 @@
 """Pydantic models for the Downtimes domain."""
+from __future__ import annotations
 
 from datetime import datetime
 

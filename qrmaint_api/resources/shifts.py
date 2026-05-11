@@ -1,4 +1,5 @@
 """Resource class for the Shifts endpoint (/shifts)."""
+from __future__ import annotations
 
 from ..models.common import PaginatedResponse
 from ..models.shifts import Shift

@@ -1,4 +1,5 @@
 """Custom exceptions raised by the QrMaint API client."""
+from __future__ import annotations
 
 
 class QrMaintError(Exception):

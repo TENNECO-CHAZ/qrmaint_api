@@ -1,4 +1,5 @@
 """Resource class for the Teams endpoint (/teams)."""
+from __future__ import annotations
 
 from ..models.common import PaginatedResponse
 from ..models.teams import Team

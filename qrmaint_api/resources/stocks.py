@@ -1,4 +1,5 @@
 """Resource class for the Stocks endpoints (/stocks, /stocks-logs)."""
+from __future__ import annotations
 
 from datetime import datetime
 

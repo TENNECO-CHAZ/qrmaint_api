@@ -11,8 +11,8 @@ Typical usage::
     for asset in assets.data:
         print(asset.id, asset.name)
 """
-
 from __future__ import annotations
+
 
 import os
 import threading

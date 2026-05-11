@@ -1,4 +1,5 @@
 """Pydantic models for the Parts (spare parts / inventory items) domain."""
+from __future__ import annotations
 
 from datetime import datetime
 

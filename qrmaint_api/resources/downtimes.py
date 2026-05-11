@@ -1,4 +1,5 @@
 """Resource class for the Downtimes endpoint (/downtimes)."""
+from __future__ import annotations
 
 from datetime import datetime
 

@@ -1,4 +1,5 @@
 """Pydantic models for the Vendors domain."""
+from __future__ import annotations
 
 from datetime import datetime
 

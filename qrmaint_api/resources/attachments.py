@@ -1,4 +1,5 @@
 """Resource class for the Attachments endpoint (/attachments)."""
+from __future__ import annotations
 
 from ..models.attachments import Attachment, AttachmentDownloadUrl
 from ..models.common import PaginatedResponse

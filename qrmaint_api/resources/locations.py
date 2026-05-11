@@ -1,4 +1,5 @@
 """Resource class for the Locations endpoint (/locations)."""
+from __future__ import annotations
 
 from ..models.common import CreatedObject, IdType, PaginatedResponse, UpdatedObject
 from ..models.locations import Location, LocationParams, UpdatedLocationParams

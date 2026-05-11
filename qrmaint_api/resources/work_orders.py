@@ -1,4 +1,5 @@
 """Resource class for the Work Orders endpoint (/work-orders)."""
+from __future__ import annotations
 
 from datetime import datetime
 

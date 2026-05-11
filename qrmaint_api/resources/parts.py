@@ -1,4 +1,5 @@
 """Resource class for the Parts endpoint (/parts)."""
+from __future__ import annotations
 
 from ..models.common import CreatedObject, PaginatedResponse
 from ..models.parts import Part, PartParams

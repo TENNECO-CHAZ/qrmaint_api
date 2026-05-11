@@ -1,4 +1,5 @@
 """Resource class for the Assets endpoint (/assets)."""
+from __future__ import annotations
 
 from ..models.assets import Asset, AssetParams, AssetPlannedProductionTime, UpdatedAssetParams
 from ..models.common import CreatedObject, IdType, PaginatedResponse, UpdatedObject

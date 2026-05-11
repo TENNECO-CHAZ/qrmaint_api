@@ -14,6 +14,7 @@ The client respects all four official rate-limit windows (10/s, 9 000/15 min,
 45 000/12 h, 1 000 000/7 days) and returns Pydantic v2 model instances instead
 of raw JSON dictionaries.
 """
+from __future__ import annotations
 
 from .client import QrMaintClient
 from .exceptions import APIError, AuthenticationError, NotFoundError, QrMaintError, RateLimitError

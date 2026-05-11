@@ -6,6 +6,7 @@ Enforces all four official rate-limit windows simultaneously:
 - 45 000 requests per 12 hours
 - 1 000 000 requests per 7 days
 """
+from __future__ import annotations
 
 import threading
 import time

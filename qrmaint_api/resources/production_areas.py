@@ -1,4 +1,5 @@
 """Resource class for the Production Areas endpoint (/production-areas)."""
+from __future__ import annotations
 
 from ..models.common import CreatedObject, IdType, PaginatedResponse, UpdatedObject
 from ..models.production_areas import ProductionArea, ProductionAreaParams, UpdatedProductionAreaParams

@@ -1,4 +1,5 @@
 """Resource class for the Dictionaries endpoint (/dictionaries)."""
+from __future__ import annotations
 
 from ..models.common import CreatedObject, PaginatedResponse, UpdatedObject
 from ..models.dictionaries import (

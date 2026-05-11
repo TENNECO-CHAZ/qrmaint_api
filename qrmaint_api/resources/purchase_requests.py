@@ -1,4 +1,5 @@
 """Resource class for the Purchase Requests endpoint (/purchase-requests)."""
+from __future__ import annotations
 
 from datetime import datetime
 

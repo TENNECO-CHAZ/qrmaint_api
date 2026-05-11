@@ -1,4 +1,5 @@
 """Resource class for the Vendors endpoint (/vendors)."""
+from __future__ import annotations
 
 from ..models.common import CreatedObject, PaginatedResponse, UpdatedObject
 from ..models.vendors import Vendor, VendorParams, UpdatedVendorParams

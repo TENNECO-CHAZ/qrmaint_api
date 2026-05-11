@@ -1,4 +1,5 @@
 """Shared base classes, generic types, and enumerations used across all models."""
+from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum

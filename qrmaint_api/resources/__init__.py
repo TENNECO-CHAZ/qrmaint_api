@@ -7,6 +7,7 @@ Each resource class wraps one API domain and is exposed as an attribute on
     client.work_orders   # WorkOrdersResource
     # … etc.
 """
+from __future__ import annotations
 
 from .andon_calls import AndonCallsResource
 from .assets import AssetsResource

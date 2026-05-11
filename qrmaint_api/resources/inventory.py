@@ -1,4 +1,5 @@
 """Resource class for the Inventory endpoints (/inventory-documents, /inventory-stock-logs)."""
+from __future__ import annotations
 
 from ..models.common import CreatedObject, PaginatedResponse
 from ..models.inventory import (

@@ -1,4 +1,5 @@
 """Resource class for the Andon Calls endpoint (/andon-calls)."""
+from __future__ import annotations
 
 from ..models.andon_calls import AndonCall, AndonCallType
 from ..models.common import PaginatedResponse

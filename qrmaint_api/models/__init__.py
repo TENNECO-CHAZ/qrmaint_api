@@ -5,6 +5,7 @@ individual submodules::
 
     from qrmaint_api.models import Asset, WorkOrder, PaginatedResponse
 """
+from __future__ import annotations
 
 from .common import (
     CreatedObject,

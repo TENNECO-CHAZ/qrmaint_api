@@ -1,4 +1,5 @@
 """Resource class for the Storage Places endpoint (/dictionaries/storage-places)."""
+from __future__ import annotations
 
 from ..models.common import CreatedObject, IdType, PaginatedResponse, UpdatedObject
 from ..models.storage_places import StoragePlace, StoragePlaceParams, UpdatedStoragePlaceParams
