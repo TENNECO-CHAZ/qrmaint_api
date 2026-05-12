@@ -98,9 +98,9 @@ class AssetsResource(BaseResource):
         Raises:
             ~qrmaint_api.exceptions.NotFoundError: If no asset matches the given ID.
         """
+        query = self._clean_params({"usedIdType": id_type.value})
         body = params.model_dump(by_alias=True, exclude_none=True)
-        body["usedIdType"] = id_type.value
-        return self._parse_single(self._put(f"/assets/{asset_id}", json=body), UpdatedObject)
+        return self._parse_single(self._put(f"/assets/{asset_id}", json=body, params=query), UpdatedObject)
 
     def get_planned_production_time(self, asset_id: int) -> AssetPlannedProductionTime:
         """Fetch the planned production time configuration for an asset.

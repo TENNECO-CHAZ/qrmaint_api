@@ -27,6 +27,7 @@ from .resources.assets import AssetsResource
 from .resources.attachments import AttachmentsResource
 from .resources.dictionaries import DictionariesResource
 from .resources.downtimes import DowntimesResource
+from .resources.failure_codes import FailureCodesResource
 from .resources.inventory import InventoryResource
 from .resources.locations import LocationsResource
 from .resources.parts import PartsResource
@@ -64,6 +65,7 @@ class QrMaintClient:
     - ``production_areas`` – production area nodes
     - ``production_lines`` – production line nodes
     - ``downtimes`` – asset downtime records
+    - ``failure_codes`` – failure codes
     - ``parts`` – spare parts / inventory items
     - ``andon_calls`` – andon (alert) calls
     - ``inventory`` – inventory documents and stock adjustments
@@ -137,6 +139,7 @@ class QrMaintClient:
         self.production_areas = ProductionAreasResource(self)
         self.production_lines = ProductionLinesResource(self)
         self.downtimes = DowntimesResource(self)
+        self.failure_codes = FailureCodesResource(self)
         self.parts = PartsResource(self)
         self.andon_calls = AndonCallsResource(self)
         self.inventory = InventoryResource(self)

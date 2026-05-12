@@ -1,8 +1,9 @@
 """Resource class for the Dictionaries endpoint (/dictionaries)."""
 from __future__ import annotations
 
-from ..models.common import CreatedObject, PaginatedResponse, UpdatedObject
+from ..models.common import CreatedObject, DictionaryItemType, PaginatedResponse, UpdatedObject
 from ..models.dictionaries import (
+    DictionariesItem,
     DictionariesItemParams,
     DictionaryItem,
     DictionaryRootParent,
@@ -46,7 +47,7 @@ class DictionariesResource(BaseResource):
         page: int = 1,
         per_page: int = 50,
         query: str | None = None,
-    ) -> PaginatedResponse[DictionaryItem]:
+    ) -> PaginatedResponse[DictionariesItem]:
         """Return a paginated list of items within a dictionary category.
 
         Args:
@@ -57,11 +58,11 @@ class DictionariesResource(BaseResource):
 
         Returns:
             A :class:`~qrmaint_api.models.common.PaginatedResponse` containing
-            :class:`~qrmaint_api.models.dictionaries.DictionaryItem` objects.
+            :class:`~qrmaint_api.models.dictionaries.DictionariesItem` objects.
         """
         params = self._clean_params({"page": page, "perPage": per_page, "query": query})
         path = f"/dictionaries/{root_parent_id}/items"
-        return self._parse_paginated(self._get(path, params=params), DictionaryItem)
+        return self._parse_paginated(self._get(path, params=params), DictionariesItem)
 
     def create_item(self, root_parent_id: int, params: DictionariesItemParams) -> CreatedObject:
         """Add a new item to a dictionary category.
@@ -76,6 +77,37 @@ class DictionariesResource(BaseResource):
         """
         body = params.model_dump(by_alias=True, exclude_none=True)
         return self._parse_single(self._post(f"/dictionaries/{root_parent_id}/items", json=body), CreatedObject)
+
+    def list_by_type(
+        self,
+        parent_type: DictionaryItemType,
+        *,
+        page: int = 1,
+        per_page: int = 50,
+        query: str | None = None,
+    ) -> PaginatedResponse[DictionaryItem]:
+        """Return dictionary items filtered by a built-in parent type.
+
+        Uses the legacy ``/dictionary-items`` endpoint (⚠️ limited support).
+
+        Args:
+            parent_type: Category to filter by (see
+                :class:`~qrmaint_api.models.common.DictionaryItemType`).
+            page: 1-based page number.
+            per_page: Number of records per page (max 100).
+            query: Free-text search applied to item name.
+
+        Returns:
+            A :class:`~qrmaint_api.models.common.PaginatedResponse` containing
+            :class:`~qrmaint_api.models.dictionaries.DictionaryItem` objects.
+        """
+        params = self._clean_params({
+            "parentType": parent_type.value,
+            "page": page,
+            "perPage": per_page,
+            "query": query,
+        })
+        return self._parse_paginated(self._get("/dictionary-items", params=params), DictionaryItem)
 
     def update_item(
         self,

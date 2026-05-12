@@ -4,16 +4,16 @@ from __future__ import annotations
 from datetime import datetime
 from enum import Enum
 
+from .attachments import Attachment
 from .common import _CamelModel
 
 
 class PriorityType(str, Enum):
-    """Priority level for a work order."""
+    """Priority level for a work order or work request."""
 
     LOW = "LOW"
     MEDIUM = "MEDIUM"
     HIGH = "HIGH"
-    CRITICAL = "CRITICAL"
 
 
 class WorkGroup(str, Enum):
@@ -56,15 +56,6 @@ class AssignedTag(_CamelModel):
     name: str | None = None
 
 
-class WorkOrderAttachment(_CamelModel):
-    id: int
-    file_name: str | None = None
-    size: int | None = None
-    type: str | None = None
-    type_group: str | None = None
-    created_datetime: datetime | None = None
-
-
 class WorkOrder(_CamelModel):
     """A maintenance work order returned by the QrMaint API."""
 
@@ -79,6 +70,8 @@ class WorkOrder(_CamelModel):
     created_user_name: str | None = None
     created_user_email: str | None = None
     created_user_phone_number: str | None = None
+    modified_user_id: int | None = None
+    modified_user_name: str | None = None
     completed_datetime: datetime | None = None
     completed_user_id: int | None = None
     completed_user_name: str | None = None
@@ -88,6 +81,7 @@ class WorkOrder(_CamelModel):
     problem_id: int | None = None
     problem_name: str | None = None
     failure_code_id: int | None = None
+    external_failure_code: str | None = None
     failure_code_name: str | None = None
     status_id: int | None = None
     status_name: str | None = None
@@ -102,8 +96,8 @@ class WorkOrder(_CamelModel):
     vendor_confirm_datetime: datetime | None = None
     vendor_completed_datetime: datetime | None = None
     all_day: bool | None = None
-    due_date_from: datetime | None = None
-    due_date_to: datetime | None = None
+    due_date_from: str | None = None
+    due_date_to: str | None = None
     total_duration_seconds: int | None = None
     downtime_id: int | None = None
     downtime_duration_seconds: int | None = None
@@ -129,58 +123,90 @@ class WorkOrder(_CamelModel):
     assigned_teams: list[AssignedTeam] = []
     assigned_shifts: list[AssignedShift] = []
     tags: list[AssignedTag] = []
-    attachments: list[WorkOrderAttachment] = []
+    attachments: list[Attachment] = []
 
 
 class WorkOrderParams(_CamelModel):
-    """Request body for creating a new work order (POST /work-orders)."""
+    """Request body for creating or updating a work order."""
 
-    subject: str
+    subject: str | None = None
+    description: str | None = None
     priority: PriorityType | None = None
+    failure_code_id: int | None = None
+    external_failure_code: str | None = None
+    type_of_work_id: int | None = None
+    allow_duplicate_for_failure_code_id: bool | None = None
+    completed_datetime: datetime | None = None
+    completed_user_id: int | None = None
+    technical_remarks: str | None = None
+    non_public: bool | None = None
+    problem_id: int | None = None
+    status_id: int | None = None
+    vendor_id: int | None = None
+    all_day: bool | None = None
     due_date_from: datetime | None = None
     due_date_to: datetime | None = None
-    description: str | None = None
-    type_of_work_id: int | None = None
-    failure_code_id: int | None = None
+    total_duration_seconds: int | None = None
+    influence_on_production_cycle_time: bool | None = None
     estimated_total_time_seconds: int | None = None
+    asset_shutdown_required: bool | None = None
+    assets_or_locations_ids: list[int] | None = None
+    assets_or_locations_external_ids: list[str] | None = None
+    users_ids: list[int] | None = None
+    teams_ids: list[int] | None = None
+    shifts_ids: list[int] | None = None
 
 
 class UpdatedWorkOrderParams(_CamelModel):
     """Request body for partially updating a work order (PATCH /work-orders/{id})."""
 
     subject: str | None = None
-    status_id: int | None = None
-    priority: PriorityType | None = None
-    type_of_work_id: int | None = None
-    failure_code_id: int | None = None
     description: str | None = None
+    priority: PriorityType | None = None
+    failure_code_id: int | None = None
+    external_failure_code: str | None = None
+    type_of_work_id: int | None = None
+    status_id: int | None = None
+    non_public: bool | None = None
+    problem_id: int | None = None
+    vendor_id: int | None = None
+    all_day: bool | None = None
     due_date_from: datetime | None = None
     due_date_to: datetime | None = None
+    total_duration_seconds: int | None = None
+    influence_on_production_cycle_time: bool | None = None
     estimated_total_time_seconds: int | None = None
+    asset_shutdown_required: bool | None = None
     completed_datetime: datetime | None = None
+    completed_user_id: int | None = None
+    technical_remarks: str | None = None
+    assets_or_locations_ids: list[int] | None = None
+    assets_or_locations_external_ids: list[str] | None = None
+    users_ids: list[int] | None = None
+    teams_ids: list[int] | None = None
+    shifts_ids: list[int] | None = None
 
 
 class WorkOrderAssetsOrLocationsAssignmentParams(_CamelModel):
     """Request body for assigning assets or locations to a work order."""
 
-    asset_ids: list[int] | None = None
-    asset_external_ids: list[str] | None = None
-    location_ids: list[int] | None = None
+    assets_or_locations_ids: list[int] | None = None
+    assets_or_locations_external_ids: list[str] | None = None
 
 
 class WorkOrderUsersAssignmentParams(_CamelModel):
     """Request body for assigning users to a work order."""
 
-    user_ids: list[int]
+    users_ids: list[int] | None = None
 
 
 class WorkOrderTeamsAssignmentParams(_CamelModel):
     """Request body for assigning teams to a work order."""
 
-    team_ids: list[int]
+    teams_ids: list[int] | None = None
 
 
 class WorkOrderShiftsAssignmentParams(_CamelModel):
     """Request body for assigning shifts to a work order."""
 
-    shift_ids: list[int]
+    shifts_ids: list[int] | None = None

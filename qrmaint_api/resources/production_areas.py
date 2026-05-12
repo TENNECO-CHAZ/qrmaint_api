@@ -92,6 +92,6 @@ class ProductionAreasResource(BaseResource):
         Raises:
             ~qrmaint_api.exceptions.NotFoundError: If no area matches the given ID.
         """
+        query = self._clean_params({"usedIdType": id_type.value})
         body = params.model_dump(by_alias=True, exclude_none=True)
-        body["usedIdType"] = id_type.value
-        return self._parse_single(self._put(f"/production-areas/{area_id}", json=body), UpdatedObject)
+        return self._parse_single(self._put(f"/production-areas/{area_id}", json=body, params=query), UpdatedObject)

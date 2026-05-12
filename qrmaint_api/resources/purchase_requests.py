@@ -26,6 +26,8 @@ class PurchaseRequestsResource(BaseResource):
         last_id: int | None = None,
         type_id: int | None = None,
         status_id: int | None = None,
+        purchase_request_external_number: str | None = None,
+        purchase_order_external_number: str | None = None,
     ) -> PaginatedResponse[PurchaseRequest]:
         """Return a paginated list of purchase requests.
 
@@ -44,6 +46,10 @@ class PurchaseRequestsResource(BaseResource):
                 pagination).
             type_id: Filter to requests of this type.
             status_id: Filter to requests in this status.
+            purchase_request_external_number: Filter by external purchase
+                request number (exact match).
+            purchase_order_external_number: Filter by external purchase order
+                number (exact match).
 
         Returns:
             A :class:`~qrmaint_api.models.common.PaginatedResponse` containing
@@ -59,6 +65,8 @@ class PurchaseRequestsResource(BaseResource):
             "lastId": last_id,
             "typeId": type_id,
             "statusId": status_id,
+            "purchaseRequestExternalNumber": purchase_request_external_number,
+            "purchaseOrderExternalNumber": purchase_order_external_number,
         })
         return self._parse_paginated(self._get("/purchase-requests", params=params), PurchaseRequest)
 

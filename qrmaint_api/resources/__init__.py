@@ -14,6 +14,7 @@ from .assets import AssetsResource
 from .attachments import AttachmentsResource
 from .dictionaries import DictionariesResource
 from .downtimes import DowntimesResource
+from .failure_codes import FailureCodesResource
 from .inventory import InventoryResource
 from .locations import LocationsResource
 from .parts import PartsResource
@@ -36,6 +37,7 @@ __all__ = [
     "AttachmentsResource",
     "DictionariesResource",
     "DowntimesResource",
+    "FailureCodesResource",
     "InventoryResource",
     "LocationsResource",
     "PartsResource",

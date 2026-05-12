@@ -92,6 +92,7 @@ class StocksResource(BaseResource):
         stock_movement_type_ids: list[int] | None = None,
         inventory_document_type_ids: list[int] | None = None,
         last_id: int | None = None,
+        exclude_api_moves: bool | None = None,
     ) -> PaginatedResponse[StockLog]:
         """Return a paginated list of stock movement log entries.
 
@@ -110,6 +111,8 @@ class StocksResource(BaseResource):
                 documents of these types.
             last_id: Return entries with an ID greater than this value (cursor
                 pagination).
+            exclude_api_moves: When ``True``, exclude movements created by API
+                (createdUserId = 100).
 
         Returns:
             A :class:`~qrmaint_api.models.common.PaginatedResponse` containing
@@ -126,5 +129,6 @@ class StocksResource(BaseResource):
             "stockMovementTypeIds": stock_movement_type_ids,
             "inventoryDocumentTypeIds": inventory_document_type_ids,
             "lastId": last_id,
+            "excludeApiMoves": exclude_api_moves,
         })
         return self._parse_paginated(self._get("/stocks-logs", params=params), StockLog)

@@ -43,15 +43,24 @@ class IdType(str, Enum):
 
 
 class DictionaryItemType(str, Enum):
-    """Enumerates the built-in dictionary item categories.
+    """Enumerates the dictionary item parent categories (DICTIONARY_ITEMS_TYPES)."""
 
-    Attributes:
-        FAILURE_CODE: Items that represent failure codes.
-        REASON: Items that represent downtime or event reasons.
-    """
-
-    FAILURE_CODE = "FAILURE_CODE"
-    REASON = "REASON"
+    TYPE_OF_WORK = "TYPE_OF_WORK"
+    PART_TYPE = "PART_TYPE"
+    EQUIPMENT_TYPE = "EQUIPMENT_TYPE"
+    EQUIPMENT_STATUS = "EQUIPMENT_STATUS"
+    COST_ACCOUNT = "COST_ACCOUNT"
+    INVENTORY_DOCUMENT_TYPES = "INVENTORY_DOCUMENT_TYPES"
+    MEASUREMENT_UNITS_FOR_READING_AND_MEASUREMENT = "MEASUREMENT_UNITS_FOR_READING_AND_MEASUREMENT"
+    LOCATION_TYPE = "LOCATION_TYPE"
+    MEASUREMENT_UNITS_FOR_QUANTITY = "MEASUREMENT_UNITS_FOR_QUANTITY"
+    MANUFACTURER = "MANUFACTURER"
+    WORK_STATUS = "WORK_STATUS"
+    TYPE_OF_SERVICE = "TYPE_OF_SERVICE"
+    PURCHASE_REQUEST_PURPOSE = "PURCHASE_REQUEST_PURPOSE"
+    STOCK_MOVEMENT_TYPES = "STOCK_MOVEMENT_TYPES"
+    PURCHASE_REQUEST_STATUS = "PURCHASE_REQUEST_STATUS"
+    CRITICALITY = "CRITICALITY"
 
 
 class PaginatedResponse(_CamelModel, Generic[T]):
@@ -81,10 +90,10 @@ class UpdatedObject(_CamelModel):
     """Response payload returned after a successful resource update (HTTP 200).
 
     Attributes:
-        updated: ``True`` when the resource was modified.
+        id: The internal ID of the updated resource.
     """
 
-    updated: bool
+    id: int
 
 
 class EmbeddedTag(_CamelModel):

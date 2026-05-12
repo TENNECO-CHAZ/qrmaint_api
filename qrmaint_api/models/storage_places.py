@@ -21,7 +21,8 @@ class StoragePlace(_CamelModel):
     """
 
     id: int
-    name: str
+    name: str | None = None
+    number: str | None = None
     external_id: str | None = None
     path: str | None = None
     warehouse_id: int | None = None
@@ -50,13 +51,9 @@ class UpdatedStoragePlaceParams(_CamelModel):
     (PATCH /dictionaries/storage-places/{storagePlaceId}).
 
     All fields are optional; only provided fields are updated.
-
-    Attributes:
-        name: New location name.
-        external_id: New external identifier (use ``null`` to clear).
-        parent_id: New parent storage place ID.
     """
 
     name: str | None = None
+    warehouse_id: int | None = None
     external_id: str | None = None
     parent_id: int | None = None

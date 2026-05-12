@@ -2,55 +2,61 @@
 from __future__ import annotations
 
 from datetime import datetime
+from enum import Enum
 
 from .common import _CamelModel
 
 
-class Downtime(_CamelModel):
-    """A downtime event recorded for an asset.
+class DowntimeStatus(str, Enum):
+    """Planned vs. unplanned classification for an asset downtime."""
 
-    Attributes:
-        id: Internal integer identifier.
-        asset_id: ID of the asset that was down.
-        asset_name: Display name of the asset.
-        start_date: UTC timestamp when the downtime began.
-        end_date: UTC timestamp when the downtime ended (``None`` if ongoing).
-        duration_minutes: Computed duration in minutes.
-        reason: Short reason label.
-        description: Free-text description of the downtime event.
-        failure_code: Failure code label applied to this downtime.
-        created_at: UTC timestamp of record creation.
-        updated_at: UTC timestamp of the last modification.
-    """
+    PLANNED = "PLANNED"
+    UNPLANNED = "UNPLANNED"
+
+
+class Downtime(_CamelModel):
+    """An asset downtime event recorded in QrMaint."""
 
     id: int
-    asset_id: int
+    asset_id: int | None = None
+    asset_external_id: str | None = None
+    parent_asset_id: int | None = None
+    parent_asset_external_id: str | None = None
     asset_name: str | None = None
-    start_date: datetime | None = None
-    end_date: datetime | None = None
-    duration_minutes: float | None = None
-    reason: str | None = None
-    description: str | None = None
+    asset_number: str | None = None
+    work_id: int | None = None
+    status: DowntimeStatus | None = None
+    is_active: bool | None = None
+    start_datetime: datetime | None = None
+    duration_hours: int | None = None
+    duration_minutes: int | None = None
+    duration_seconds: int | None = None
+    total_duration_in_seconds: int | None = None
+    remarks: str | None = None
+    created_user_name: str | None = None
+    created_user_id: int | None = None
+    created_datetime: datetime | None = None
     failure_code: str | None = None
-    created_at: datetime | None = None
-    updated_at: datetime | None = None
+    external_failure_code: str | None = None
 
 
 class DowntimeParams(_CamelModel):
     """Request body for recording a new downtime event (POST /downtimes).
 
     Attributes:
-        asset_id: Required ID of the affected asset.
-        start_date: Required UTC start timestamp.
-        end_date: Optional UTC end timestamp (omit for open-ended downtime).
-        reason: Optional reason label.
-        description: Optional free-text description.
-        failure_code_id: Optional failure code dictionary item ID.
+        start_datetime: Required downtime start timestamp (ISO 8601).
+        status: Required downtime classification (PLANNED or UNPLANNED).
+        asset_id: Asset internal ID (required if asset_external_id not provided).
+        asset_external_id: Asset external ID (alternative to asset_id).
+        duration_in_seconds: Optional duration; omit to leave the downtime active.
+        work_id: Optional associated work order ID.
+        remarks: Optional free-text remarks.
     """
 
-    asset_id: int
-    start_date: datetime
-    end_date: datetime | None = None
-    reason: str | None = None
-    description: str | None = None
-    failure_code_id: int | None = None
+    start_datetime: datetime
+    status: DowntimeStatus
+    asset_id: int | None = None
+    asset_external_id: str | None = None
+    duration_in_seconds: int | None = None
+    work_id: int | None = None
+    remarks: str | None = None

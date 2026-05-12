@@ -93,7 +93,7 @@ class StoragePlacesResource(BaseResource):
         Raises:
             ~qrmaint_api.exceptions.NotFoundError: If no storage place matches the given ID.
         """
+        query = self._clean_params({"usedIdType": id_type.value})
         body = params.model_dump(by_alias=True, exclude_none=True)
         path = f"/dictionaries/storage-places/{storage_place_id}"
-        body["usedIdType"] = id_type.value
-        return self._parse_single(self._patch(path, json=body), UpdatedObject)
+        return self._parse_single(self._patch(path, json=body, params=query), UpdatedObject)

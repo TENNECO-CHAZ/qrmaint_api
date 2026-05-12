@@ -14,11 +14,12 @@ from .common import (
     PaginatedResponse,
     UpdatedObject,
 )
-from .andon_calls import AndonCall, AndonCallType
+from .andon_calls import AndonCall
 from .assets import Asset, AssetParams, AssetPlannedProductionTime, UpdatedAssetParams
 from .attachments import Attachment, AttachmentDownloadUrl
-from .dictionaries import DictionariesItemParams, DictionaryItem, DictionaryRootParent, UpdatedDictionaryItemParams
+from .dictionaries import DictionariesItem, DictionariesItemParams, DictionaryItem, DictionaryRootParent, UpdatedDictionaryItemParams
 from .downtimes import Downtime, DowntimeParams
+from .failure_codes import FailureCode
 from .inventory import (
     InventoryDocument,
     InventoryDocumentItem,
@@ -28,12 +29,12 @@ from .inventory import (
     NewInventoryDocumentItemParams,
 )
 from .locations import Location, LocationParams, UpdatedLocationParams
-from .parts import Part, PartParams
+from .parts import Part, PartParams, PartSupplier, PartSupplierParams, PartSupplierUpdateParams, PartUpdateParams
 from .production_areas import ProductionArea, ProductionAreaParams, UpdatedProductionAreaParams
 from .production_lines import ProductionLine, ProductionLineParams, UpdatedProductionLineParams
 from .purchase_requests import PurchaseRequest, PurchaseRequestItem, UpdatedPurchaseRequestParams
 from .shifts import Shift
-from .stocks import Stock, StockAdjustingItem, StockAdjustingParams, StockLog, UpdatedStockParams
+from .stocks import Stock, StockAdjustingParams, StockItem, StockLog, UpdatedStockParams
 from .storage_places import StoragePlace, StoragePlaceParams, UpdatedStoragePlaceParams
 from .tags import Tag, TagType
 from .teams import Team
@@ -54,19 +55,20 @@ from .work_requests import WorkRequest, WorkRequestParams
 
 __all__ = [
     "AndonCall",
-    "AndonCallType",
     "Asset",
     "AssetParams",
     "AssetPlannedProductionTime",
     "Attachment",
     "AttachmentDownloadUrl",
     "CreatedObject",
+    "DictionariesItem",
     "DictionariesItemParams",
     "DictionaryItem",
     "DictionaryItemType",
     "DictionaryRootParent",
     "Downtime",
     "DowntimeParams",
+    "FailureCode",
     "IdType",
     "InventoryDocument",
     "InventoryDocumentItem",
@@ -79,18 +81,21 @@ __all__ = [
     "PaginatedResponse",
     "Part",
     "PartParams",
+    "PartSupplier",
+    "PartSupplierParams",
+    "PartSupplierUpdateParams",
+    "PartUpdateParams",
     "PriorityType",
     "ProductionArea",
     "ProductionAreaParams",
     "ProductionLine",
     "ProductionLineParams",
-    "ProductionLineParams",
     "PurchaseRequest",
     "PurchaseRequestItem",
     "Shift",
     "Stock",
-    "StockAdjustingItem",
     "StockAdjustingParams",
+    "StockItem",
     "StockLog",
     "StoragePlace",
     "StoragePlaceParams",

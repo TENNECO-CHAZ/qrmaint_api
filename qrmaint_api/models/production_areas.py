@@ -42,7 +42,7 @@ class ProductionArea(_CamelModel):
     id: int
     external_id: str | None = None
     number: str | None = None
-    name: str
+    name: str | None = None
     additional_info: str | None = None
     client_id: int | None = None
     parent_id: int | None = None
@@ -69,47 +69,40 @@ class ProductionArea(_CamelModel):
 
 
 class ProductionAreaParams(_CamelModel):
-    """Request body for creating a new production area (POST /production-areas).
-
-    Attributes:
-        name: Required area name.
-        external_id: Optional external identifier.
-        additional_info: Optional additional information.
-        parent_id: Optional parent location or area ID.
-        located_at_id: Optional ID of the asset or location this area is situated at.
-        cost_account_id: Optional cost account ID.
-        type_id: Optional area type dictionary item ID (used for filtering).
-    """
+    """Request body for creating a new production area (POST /production-areas)."""
 
     name: str
+    located_at_id: int | None = None
+    located_at_external_id: str | None = None
+    is_public_request: bool | None = None
+    is_parent_address: bool | None = None
     external_id: str | None = None
     additional_info: str | None = None
-    parent_id: int | None = None
-    located_at_id: int | None = None
     cost_account_id: int | None = None
-    type_id: int | None = None
+    address: str | None = None
+    address_city: str | None = None
+    address_state: str | None = None
+    address_zip: str | None = None
+    address_country: str | None = None
+    address_latitude: float | None = None
+    address_longitude: float | None = None
 
 
 class UpdatedProductionAreaParams(_CamelModel):
-    """Request body for partially updating a production area (PUT /production-areas/{id}).
-
-    All fields are optional; only provided fields are updated.
-    Use ``null`` to clear a field.
-
-    Attributes:
-        name: New area name.
-        external_id: New external identifier.
-        additional_info: New additional information.
-        parent_id: New parent location or area ID.
-        located_at_id: New asset or location ID this area is situated at.
-        cost_account_id: New cost account ID.
-        type_id: New area type dictionary item ID.
-    """
+    """Request body for partially updating a production area (PUT /production-areas/{id})."""
 
     name: str | None = None
+    located_at_id: int | None = None
+    located_at_external_id: str | None = None
+    is_public_request: bool | None = None
+    is_parent_address: bool | None = None
     external_id: str | None = None
     additional_info: str | None = None
-    parent_id: int | None = None
-    located_at_id: int | None = None
     cost_account_id: int | None = None
-    type_id: int | None = None
+    address: str | None = None
+    address_city: str | None = None
+    address_state: str | None = None
+    address_zip: str | None = None
+    address_country: str | None = None
+    address_latitude: float | None = None
+    address_longitude: float | None = None

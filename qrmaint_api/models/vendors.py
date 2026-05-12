@@ -1,32 +1,26 @@
 """Pydantic models for the Vendors domain."""
 from __future__ import annotations
 
-from datetime import datetime
-
 from .common import _CamelModel
 
 
 class Vendor(_CamelModel):
-    """A supplier or service vendor in QrMaint.
-
-    Vendors can be referenced in purchase requests and part records to
-    indicate where parts are sourced from.
-
-    Attributes:
-        id: Internal integer identifier.
-        name: Human-readable vendor name.
-        external_id: Caller-supplied external identifier.
-        description: Optional free-text notes about the vendor.
-        active: Whether the vendor is currently selectable.
-        created_at: UTC timestamp of record creation.
-    """
+    """A supplier or service vendor in QrMaint."""
 
     id: int
-    name: str
-    external_id: str | None = None
-    description: str | None = None
-    active: bool | None = None
-    created_at: datetime | None = None
+    name: str | None = None
+    email: str | None = None
+    service_email: str | None = None
+    phone: str | None = None
+    service_phone: str | None = None
+    service_phone_prefix: str | None = None
+    additional_info: str | None = None
+    type_of_service_id: int | None = None
+    type_of_service_name: str | None = None
+    address: str | None = None
+    address_city: str | None = None
+    address_zip: str | None = None
+    address_country: str | None = None
 
 
 class VendorParams(_CamelModel):
@@ -34,28 +28,48 @@ class VendorParams(_CamelModel):
 
     Attributes:
         name: Required vendor name.
-        external_id: Optional external identifier.
-        description: Optional free-text description.
+        email: Optional vendor email.
+        service_email: Optional service email.
+        phone: Optional phone number.
+        service_phone: Optional service phone number.
+        service_phone_prefix: Optional service phone prefix (max 6 chars).
+        additional_info: Optional additional information.
+        type_of_service_id: Optional type of service dictionary item ID.
+        address: Optional address.
+        address_city: Optional city.
+        address_country: Optional country.
+        address_zip: Optional postal code.
     """
 
     name: str
-    external_id: str | None = None
-    description: str | None = None
+    email: str | None = None
+    service_email: str | None = None
+    phone: str | None = None
+    service_phone: str | None = None
+    service_phone_prefix: str | None = None
+    additional_info: str | None = None
+    type_of_service_id: int | None = None
+    address: str | None = None
+    address_city: str | None = None
+    address_country: str | None = None
+    address_zip: str | None = None
 
 
 class UpdatedVendorParams(_CamelModel):
     """Request body for partially updating a vendor (PATCH /vendors/{vendorId}).
 
     All fields are optional; only provided fields are updated.
-
-    Attributes:
-        name: New vendor name.
-        external_id: New external identifier (use ``null`` to clear).
-        description: New description.
-        active: New active state.
     """
 
     name: str | None = None
-    external_id: str | None = None
-    description: str | None = None
-    active: bool | None = None
+    email: str | None = None
+    service_email: str | None = None
+    phone: str | None = None
+    service_phone: str | None = None
+    service_phone_prefix: str | None = None
+    additional_info: str | None = None
+    type_of_service_id: int | None = None
+    address: str | None = None
+    address_city: str | None = None
+    address_country: str | None = None
+    address_zip: str | None = None

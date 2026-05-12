@@ -48,41 +48,44 @@ class BaseResource:
         """
         return self._client._request("GET", path, params=params)
 
-    def _post(self, path: str, json: dict | None = None) -> dict:
+    def _post(self, path: str, json: dict | None = None, params: dict | None = None) -> dict:
         """Issue a POST request and return the unwrapped payload dict.
 
         Args:
             path: API path relative to the base URL.
             json: Request body serialised as JSON.
+            params: Optional query-string parameters.
 
         Returns:
             The ``payload`` value from the API response envelope.
         """
-        return self._client._request("POST", path, json=json)
+        return self._client._request("POST", path, json=json, params=params)
 
-    def _put(self, path: str, json: dict | None = None) -> dict:
+    def _put(self, path: str, json: dict | None = None, params: dict | None = None) -> dict:
         """Issue a PUT request and return the unwrapped payload dict.
 
         Args:
             path: API path relative to the base URL.
             json: Request body serialised as JSON.
+            params: Optional query-string parameters.
 
         Returns:
             The ``payload`` value from the API response envelope.
         """
-        return self._client._request("PUT", path, json=json)
+        return self._client._request("PUT", path, json=json, params=params)
 
-    def _patch(self, path: str, json: dict | None = None) -> dict:
+    def _patch(self, path: str, json: dict | None = None, params: dict | None = None) -> dict:
         """Issue a PATCH request and return the unwrapped payload dict.
 
         Args:
             path: API path relative to the base URL.
             json: Partial request body serialised as JSON.
+            params: Optional query-string parameters.
 
         Returns:
             The ``payload`` value from the API response envelope.
         """
-        return self._client._request("PATCH", path, json=json)
+        return self._client._request("PATCH", path, json=json, params=params)
 
     def _delete(self, path: str) -> dict:
         """Issue a DELETE request and return the unwrapped payload dict.

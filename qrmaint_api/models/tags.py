@@ -7,33 +7,20 @@ from .common import _CamelModel
 
 
 class TagType(str, Enum):
-    """The category of resource a tag is associated with.
+    """Resource category a tag is associated with."""
 
-    Attributes:
-        ASSET: Tag is linked to an asset.
-        PRODUCTION_LINE: Tag is linked to a production line.
-        WORK_ORDER: Tag is linked to a work order.
-    """
-
-    ASSET = "ASSET"
+    WORK = "WORK"
+    EQUIPMENT = "EQUIPMENT"
+    VENDOR = "VENDOR"
+    PART = "PART"
+    PRODUCTION_AREA = "PRODUCTION_AREA"
+    ATTACHMENT = "ATTACHMENT"
     PRODUCTION_LINE = "PRODUCTION_LINE"
-    WORK_ORDER = "WORK_ORDER"
 
 
 class Tag(_CamelModel):
-    """A label that can be attached to QrMaint resources for grouping or filtering.
-
-    Tags provide a free-form classification layer on top of the structured
-    hierarchy (assets, locations, etc.).
-
-    Attributes:
-        id: Internal integer identifier.
-        name: Human-readable tag label.
-        type: Resource category this tag applies to (see :class:`TagType`).
-        color: Optional hex or named colour used for UI display.
-    """
+    """A label that can be attached to QrMaint resources for grouping or filtering."""
 
     id: int
-    name: str
-    type: str | None = None
-    color: str | None = None
+    name: str | None = None
+    resource_type: TagType | None = None
