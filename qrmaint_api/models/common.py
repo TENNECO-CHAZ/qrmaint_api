@@ -29,6 +29,9 @@ class _CamelModel(BaseModel):
         populate_by_name=True,
     )
 
+    def model_dump(self, *, mode: str = "json", **kwargs):
+        return super().model_dump(mode=mode, **kwargs)
+
 
 class IdType(str, Enum):
     """Specifies which identifier type is used when addressing a resource by ID.

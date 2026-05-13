@@ -214,7 +214,8 @@ class QrMaintClient:
                 msg = response.text
             raise APIError(response.status_code, msg)
         body = response.json()
-        return body.get("payload", body)
+        payload = body.get("payload")
+        return body if payload is None else payload
 
     def close(self) -> None:
         """Close the underlying HTTP connection pool.
