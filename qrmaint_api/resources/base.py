@@ -1,7 +1,8 @@
 """Abstract base class shared by all resource helpers."""
 from __future__ import annotations
 
-
+import math
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import TYPE_CHECKING, Any, TypeVar, Type
 
 from ..models.common import PaginatedResponse, _CamelModel
@@ -139,3 +140,55 @@ class BaseResource:
             A new dict with all ``None`` entries removed.
         """
         return {k: v for k, v in params.items() if v is not None}
+
+    def _fetch_all_pages(
+        self,
+        path: str,
+        model: Type[T],
+        params: dict[str, Any] | None = None,
+        per_page: int = 100,
+        max_workers: int = 10,
+    ) -> list[T]:
+        """Fetch every page of a paginated endpoint and return a flat list.
+
+        Issues page 1 first to discover the total record count, then fires
+        all remaining pages concurrently up to *max_workers* threads.  The
+        rate limiter serialises slot acquisition, so throughput never exceeds
+        the API's 10 req/s window while network I/O is fully parallelised.
+
+        Args:
+            path: API path relative to the base URL (e.g. ``"/parts"``).
+            model: Pydantic model class for each item in the response.
+            params: Extra query-string parameters (must not include ``page``
+                or ``perPage``; those are managed internally).
+            per_page: Page size sent to the API (max 100).
+            max_workers: Maximum parallel worker threads (default 10).
+
+        Returns:
+            All items across every page, in page order.
+        """
+        base = {**(params or {}), "perPage": per_page}
+
+        first = self._parse_paginated(self._get(path, params={**base, "page": 1}), model)
+        result: list[T] = list(first.data)
+        total_pages = math.ceil(first.all_records_count / per_page) if first.all_records_count else 1
+
+        if total_pages <= 1:
+            return result
+
+        def _fetch(page: int) -> tuple[int, list]:
+            data = self._parse_paginated(self._get(path, params={**base, "page": page}), model).data
+            return page, data
+
+        pages: dict[int, list] = {}
+        workers = min(max_workers, total_pages - 1)
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            futures = {pool.submit(_fetch, p): p for p in range(2, total_pages + 1)}
+            for future in as_completed(futures):
+                page_num, data = future.result()
+                pages[page_num] = data
+
+        for p in range(2, total_pages + 1):
+            result.extend(pages[p])
+
+        return result
