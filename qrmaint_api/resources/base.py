@@ -115,16 +115,19 @@ class BaseResource:
         """
         return PaginatedResponse[model].model_validate(data)
 
-    def _parse_single(self, data: dict, model: Type[T]) -> T:
+    def _parse_single(self, data: dict | None, model: Type[T]) -> T | None:
         """Deserialise a single-object response into the given Pydantic model.
 
         Args:
-            data: Raw dict from the API (already unwrapped from the envelope).
+            data: Raw dict from the API (already unwrapped from the envelope),
+                or ``None`` when the API returns ``"payload": null`` on success.
             model: The Pydantic model class to instantiate.
 
         Returns:
-            A validated instance of ``model``.
+            A validated instance of ``model``, or ``None`` if *data* is ``None``.
         """
+        if data is None:
+            return None
         return model.model_validate(data)
 
     def _clean_params(self, params: dict[str, Any]) -> dict[str, Any]:
