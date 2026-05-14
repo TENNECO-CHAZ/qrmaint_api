@@ -198,6 +198,57 @@ class PartsResource(BaseResource):
         body = params.model_dump(by_alias=True, exclude_none=True)
         return self._parse_single(self._put(f"/parts/{part_id}", json=body, params=query), UpdatedObject)
 
+    def list_all(
+        self,
+        *,
+        query: str | None = None,
+        type_id: int | None = None,
+        inventory_id: int | None = None,
+        only_critical: bool | None = None,
+        created_datetime_from: datetime | str | None = None,
+        created_datetime_to: datetime | str | None = None,
+        modified_datetime_from: datetime | str | None = None,
+        modified_datetime_to: datetime | str | None = None,
+        max_workers: int = 10,
+    ) -> list[Part]:
+        """Fetch every part across all pages using parallel requests.
+
+        Equivalent to calling :meth:`list` repeatedly for every page, but
+        fires up to *max_workers* pages concurrently so the full collection
+        is retrieved in a fraction of the sequential time.
+
+        Args:
+            query: Free-text search applied to part name and number.
+            type_id: Filter to parts belonging to this part type.
+            inventory_id: Filter to parts associated with this inventory.
+            only_critical: When ``True``, return only critical parts.
+            created_datetime_from: Include only parts created on or after
+                this datetime (ISO 8601 string or ``datetime`` object).
+            created_datetime_to: Include only parts created on or before
+                this datetime.
+            modified_datetime_from: Include only parts modified on or after
+                this datetime.
+            modified_datetime_to: Include only parts modified on or before
+                this datetime.
+            max_workers: Maximum parallel worker threads (default 10,
+                matching the API's per-second rate limit).
+
+        Returns:
+            A flat list of every :class:`~qrmaint_api.models.parts.Part`
+            matching the filters, in page order.
+        """
+        params = self._clean_params({
+            "query": query,
+            "typeId": type_id,
+            "inventoryId": inventory_id,
+            "onlyCritical": only_critical,
+            "createdDatetimeFrom": created_datetime_from,
+            "createdDatetimeTo": created_datetime_to,
+            "modifiedDatetimeFrom": modified_datetime_from,
+            "modifiedDatetimeTo": modified_datetime_to,
+        })
+        return self._fetch_all_pages("/parts", Part, params=params, max_workers=max_workers)
+
     def create(self, params: PartParams) -> CreatedObject:
         """Create a new part.
 

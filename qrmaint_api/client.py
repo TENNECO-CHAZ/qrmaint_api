@@ -132,6 +132,7 @@ class QrMaintClient:
             base_url=_BASE_URL,
             headers={"Authorization": f"Bearer {self._api_token}"},
             timeout=30.0,
+            limits=httpx.Limits(max_keepalive_connections=10, max_connections=20),
         )
 
         self.assets = AssetsResource(self)
