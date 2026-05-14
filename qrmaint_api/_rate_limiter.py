@@ -50,13 +50,18 @@ class RateLimiter:
         """Block the calling thread until all rate-limit windows allow a request.
 
         Checks every window atomically.  If any window is exhausted the method
-        sleeps for 50 ms and retries, repeating until all windows permit the
-        request and the counters have been incremented.
+        sleeps precisely until the soonest slot opens (derived from window stats)
+        rather than polling on a fixed interval.
         """
         while True:
             with self._lock:
-                if all(self._strategy.test(lim, self._KEY) for lim in self._limits):
+                blocked = [lim for lim in self._limits if not self._strategy.test(lim, self._KEY)]
+                if not blocked:
                     for lim in self._limits:
                         self._strategy.hit(lim, self._KEY)
                     return
-            time.sleep(0.05)
+                sleep_for = min(
+                    self._strategy.get_window_stats(lim, self._KEY).reset_time
+                    for lim in blocked
+                )
+            time.sleep(max(sleep_for, 0.001))
