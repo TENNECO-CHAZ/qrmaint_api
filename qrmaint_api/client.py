@@ -211,9 +211,11 @@ class QrMaintClient:
             try:
                 body = response.json()
                 msg = body.get("error") or body.get("message") or response.text
+                payload = body.get("payload")
             except Exception:
                 msg = response.text
-            raise APIError(response.status_code, msg)
+                payload = None
+            raise APIError(response.status_code, msg, payload=payload)
         body = response.json()
         if "payload" not in body:
             return body

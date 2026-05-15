@@ -3,8 +3,16 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from ..exceptions import APIError, StockSyncValidationError
 from ..models.common import PaginatedResponse, UpdatedObject
-from ..models.stocks import Stock, StockAdjustingParams, StockLog, UpdatedStockParams
+from ..models.stocks import (
+    Stock,
+    StockAdjustingParams,
+    StockLog,
+    SyncStockQuantitiesParams,
+    SyncStockQuantityInvalidItem,
+    UpdatedStockParams,
+)
 from .base import BaseResource
 
 
@@ -78,6 +86,37 @@ class StocksResource(BaseResource):
         """
         body = params.model_dump(by_alias=True, exclude_none=True)
         return self._parse_single(self._put("/stocks/adjust-items", json=body), UpdatedObject)
+
+    def sync_quantities(self, params: SyncStockQuantitiesParams) -> None:
+        """Overwrite stock quantities and unit prices for multiple items in one transaction.
+
+        All rows are processed atomically: if any item fails validation the
+        entire batch is rolled back and a
+        :class:`~qrmaint_api.exceptions.StockSyncValidationError` is raised with
+        the list of rejected rows.
+
+        Args:
+            params: Up to 100 stock lines, each identifying the part and
+                warehouse (by internal ID or external ID) plus the target
+                quantity and unit price.
+
+        Raises:
+            ~qrmaint_api.exceptions.StockSyncValidationError: If any item fails
+                validation (HTTP 400).  ``exc.invalid_items`` is a list of
+                :class:`~qrmaint_api.models.stocks.SyncStockQuantityInvalidItem`
+                describing each rejected row.
+            ~qrmaint_api.exceptions.NotFoundError: If a referenced part or
+                warehouse does not exist or does not belong to the client.
+        """
+        body = params.model_dump(by_alias=True, exclude_none=True)
+        try:
+            self._put("/stocks/sync-quantities", json=body)
+        except APIError as exc:
+            if exc.status_code == 400 and isinstance(exc.payload, dict):
+                raw_invalid = exc.payload.get("invalidItems") or []
+                invalid_items = [SyncStockQuantityInvalidItem.model_validate(i) for i in raw_invalid]
+                raise StockSyncValidationError(invalid_items) from exc
+            raise
 
     def list_logs(
         self,

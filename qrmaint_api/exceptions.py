@@ -44,15 +44,41 @@ class APIError(QrMaintError):
     Attributes:
         status_code: The HTTP status code returned by the server.
         message: The error message extracted from the response body.
+        payload: The ``payload`` value from the response body, when present.
     """
 
-    def __init__(self, status_code: int, message: str) -> None:
+    def __init__(self, status_code: int, message: str, payload: dict | None = None) -> None:
         """Initialize the error with the HTTP status code and server message.
 
         Args:
             status_code: HTTP status code (e.g. 400, 500).
             message: Human-readable error description from the response.
+            payload: Parsed ``payload`` field from the response body, if any.
         """
         self.status_code = status_code
         self.message = message
+        self.payload = payload
         super().__init__(f"API error {status_code}: {message}")
+
+
+class StockSyncValidationError(APIError):
+    """Raised when PUT /stocks/sync-quantities returns HTTP 400 with per-row errors.
+
+    All items are processed in a single transaction, so this exception means
+    the entire batch was rolled back.
+
+    Attributes:
+        invalid_items: Rejected rows, each carrying the submitted line and the
+            reason it was rejected.
+    """
+
+    def __init__(self, invalid_items: list) -> None:
+        """Initialize with the list of rejected stock lines.
+
+        Args:
+            invalid_items: List of
+                :class:`~qrmaint_api.models.stocks.SyncStockQuantityInvalidItem`
+                instances describing each failure.
+        """
+        self.invalid_items = invalid_items
+        super().__init__(400, f"{len(invalid_items)} stock item(s) failed validation")

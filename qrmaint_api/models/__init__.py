@@ -34,7 +34,16 @@ from .production_areas import ProductionArea, ProductionAreaParams, UpdatedProdu
 from .production_lines import ProductionLine, ProductionLineParams, UpdatedProductionLineParams
 from .purchase_requests import PurchaseRequest, PurchaseRequestItem, UpdatedPurchaseRequestParams
 from .shifts import Shift
-from .stocks import Stock, StockAdjustingParams, StockItem, StockLog, UpdatedStockParams
+from .stocks import (
+    Stock,
+    StockAdjustingParams,
+    StockItem,
+    StockLog,
+    SyncStockQuantitiesParams,
+    SyncStockQuantityInvalidItem,
+    SyncStockQuantityItem,
+    UpdatedStockParams,
+)
 from .storage_places import StoragePlace, StoragePlaceParams, UpdatedStoragePlaceParams
 from .tags import Tag, TagType
 from .teams import Team
@@ -97,6 +106,9 @@ __all__ = [
     "StockAdjustingParams",
     "StockItem",
     "StockLog",
+    "SyncStockQuantitiesParams",
+    "SyncStockQuantityInvalidItem",
+    "SyncStockQuantityItem",
     "StoragePlace",
     "StoragePlaceParams",
     "Tag",

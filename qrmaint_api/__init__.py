@@ -17,7 +17,7 @@ of raw JSON dictionaries.
 from __future__ import annotations
 
 from .client import QrMaintClient
-from .exceptions import APIError, AuthenticationError, NotFoundError, QrMaintError, RateLimitError
+from .exceptions import APIError, AuthenticationError, NotFoundError, QrMaintError, RateLimitError, StockSyncValidationError
 from .models import (
     AndonCall,
     Asset,
@@ -62,6 +62,9 @@ from .models import (
     StockAdjustingParams,
     StockItem,
     StockLog,
+    SyncStockQuantitiesParams,
+    SyncStockQuantityInvalidItem,
+    SyncStockQuantityItem,
     StoragePlace,
     StoragePlaceParams,
     Tag,
@@ -138,10 +141,14 @@ __all__ = [
     "QrMaintError",
     "RateLimitError",
     "Shift",
+    "StockSyncValidationError",
     "Stock",
     "StockAdjustingParams",
     "StockItem",
     "StockLog",
+    "SyncStockQuantitiesParams",
+    "SyncStockQuantityInvalidItem",
+    "SyncStockQuantityItem",
     "StoragePlace",
     "StoragePlaceParams",
     "Tag",

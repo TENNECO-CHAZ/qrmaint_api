@@ -51,6 +51,30 @@ class StockAdjustingParams(_CamelModel):
     stock_items_list: list[StockItem]
 
 
+class SyncStockQuantityItem(_CamelModel):
+    """A single line within a sync-quantities batch request."""
+
+    part_id: int | None = None
+    part_external_id: str | None = None
+    warehouse_id: int | None = None
+    warehouse_external_id: str | None = None
+    quantity: float
+    unit_price: float
+
+
+class SyncStockQuantitiesParams(_CamelModel):
+    """Request body for PUT /stocks/sync-quantities (max 100 items)."""
+
+    stock_items_list: list[SyncStockQuantityItem]
+
+
+class SyncStockQuantityInvalidItem(_CamelModel):
+    """A rejected row returned in the 400 response payload."""
+
+    item: SyncStockQuantityItem
+    reason: str | None = None
+
+
 class StockLog(_CamelModel):
     """An audit log entry recording a stock quantity change."""
 
